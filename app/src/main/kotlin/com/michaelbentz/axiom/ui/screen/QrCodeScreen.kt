@@ -1,11 +1,9 @@
 package com.michaelbentz.axiom.ui.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
@@ -26,96 +24,86 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import com.michaelbentz.axiom.R
+import com.michaelbentz.axiom.ui.component.QrCodeImage
+import com.michaelbentz.axiom.ui.component.Spacer
+import com.michaelbentz.axiom.ui.component.TopBar
 import com.michaelbentz.axiom.viewmodel.QrCodeViewModel
 
 @Composable
 fun QrCodeScreen() {
-    val qrCodeViewModel: QrCodeViewModel = viewModel()
-    val latestQrCodeState = qrCodeViewModel.latestQrCode.observeAsState()
+    val viewModel: QrCodeViewModel = viewModel()
+    val latestQrCodeState = viewModel.latestQrCode.observeAsState()
     val focusManager = LocalFocusManager.current
 
-    Surface(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+    TopBar {
+        Surface(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Column(
+            Box(
                 modifier = Modifier
-                    .wrapContentSize()
-                    .align(Alignment.TopCenter),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                    .verticalScroll(rememberScrollState())
+                    .fillMaxSize()
             ) {
-                Spacer(modifier = Modifier.height(12.dp))
-                var data by remember {
-                    mutableStateOf(TextFieldValue(String()))
-                }
-                OutlinedTextField(
-                    maxLines = 7,
-                    minLines = 7,
-                    singleLine = false,
-                    label = {
-                        Text(text = stringResource(id = R.string.data))
-                    },
-                    value = data,
-                    onValueChange = {
-                        data = it
+                Column(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .align(Alignment.TopCenter),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    var dataString by remember {
+                        mutableStateOf(String())
                     }
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                Button(onClick = {
-                    if (data.text.isNotEmpty()) {
-                        focusManager.clearFocus()
-                        qrCodeViewModel.createQrCode(data.text)
-                    }
-                }) {
-                    Text(
-                        text = stringResource(id = R.string.generate)
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        singleLine = false,
+                        minLines = 4,
+                        maxLines = 4,
+                        label = {
+                            Text(
+                                text = stringResource(id = R.string.data_string)
+                            )
+                        },
+                        value = dataString,
+                        onValueChange = {
+                            dataString = it
+                        }
                     )
-                }
-                Spacer(modifier = Modifier.height(12.dp))
-                Icon(
-                    Icons.Filled.KeyboardArrowDown,
-                    null,
-                )
-                Spacer(modifier = Modifier.height(12.dp))
+                    Spacer()
+                    Button(
+                        onClick = {
+                            if (dataString.isNotEmpty()) {
+                                focusManager.clearFocus()
+                                viewModel.createQrCode(dataString)
+                            }
+                        }) {
+                        Text(
+                            text = stringResource(id = R.string.generate_qr_code)
+                        )
+                    }
+                    Spacer()
+                    Icon(
+                        Icons.Filled.KeyboardArrowDown,
+                        stringResource(id = R.string.content_description_arrow_down),
+                    )
+                    Spacer()
 
-                val latestQrCode = latestQrCodeState.value
-                if (latestQrCode != null) {
-
-                    Spacer(modifier = Modifier.height(12.dp))
-                    QrCodeImage(bytes = latestQrCode.bytes)
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(text = latestQrCode.millis.toString())
+                    val latestQrCode = latestQrCodeState.value
+                    if (latestQrCode != null) {
+                        Spacer()
+                        QrCodeImage(bytes = latestQrCode.bytes)
+                        Spacer()
+                        Text(
+                            text = latestQrCode.toString()
+                        )
+                    }
                 }
             }
         }
-    }
-}
-
-@OptIn(ExperimentalGlideComposeApi::class)
-@Composable
-fun QrCodeImage(bytes: ByteArray) {
-    Box(
-        modifier = Modifier
-            .background(
-                colorResource(id = R.color.white)
-            )
-    ) {
-        GlideImage(
-            model = bytes,
-            contentDescription = null,
-            modifier = Modifier.padding(12.dp)
-        )
     }
 }

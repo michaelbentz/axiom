@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Axiom</string>
-    <string name="data">Data</string>
-    <string name="generate">Generate</string>
+    <string name="data_string">Data string</string>
+    <string name="generate_qr_code">Generate QR Code</string>
+    <string name="content_description_arrow_down">Down arrow</string>
+    <string name="content_description_qr_code">QR code</string>
 </resources>
