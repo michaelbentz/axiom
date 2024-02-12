@@ -62,8 +62,8 @@ fun QrCodeScreen() {
                             .fillMaxWidth()
                             .padding(12.dp),
                         singleLine = false,
-                        minLines = 4,
-                        maxLines = 4,
+                        minLines = 3,
+                        maxLines = 6,
                         label = {
                             Text(text = stringResource(id = R.string.data_string))
                         },
