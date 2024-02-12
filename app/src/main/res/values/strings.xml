@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Axiom</string>
+    <string name="data">Data</string>
+    <string name="generate">Generate</string>
 </resources>

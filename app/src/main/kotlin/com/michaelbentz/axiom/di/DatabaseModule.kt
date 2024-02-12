@@ -2,7 +2,7 @@ package com.michaelbentz.axiom.di
 
 import android.content.Context
 import com.michaelbentz.axiom.database.Database
-import com.michaelbentz.axiom.database.dao.PlaceholderDao
+import com.michaelbentz.axiom.database.dao.QrCodeDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +21,7 @@ class DatabaseModule {
     }
 
     @Provides
-    fun providePlaceholderDao(database: Database): PlaceholderDao {
-        return database.placeholderDao()
+    fun providePlaceholderDao(database: Database): QrCodeDao {
+        return database.qrCodeDao()
     }
 }
