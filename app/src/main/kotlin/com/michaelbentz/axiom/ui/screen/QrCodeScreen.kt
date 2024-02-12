@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.michaelbentz.axiom.R
-import com.michaelbentz.axiom.ui.component.QrCodeImage
+import com.michaelbentz.axiom.ui.component.ImageFromByteArray
 import com.michaelbentz.axiom.ui.component.Spacer
 import com.michaelbentz.axiom.ui.component.TopBar
 import com.michaelbentz.axiom.viewmodel.QrCodeViewModel
@@ -65,9 +65,7 @@ fun QrCodeScreen() {
                         minLines = 4,
                         maxLines = 4,
                         label = {
-                            Text(
-                                text = stringResource(id = R.string.data_string)
-                            )
+                            Text(text = stringResource(id = R.string.data_string))
                         },
                         value = dataString,
                         onValueChange = {
@@ -82,9 +80,7 @@ fun QrCodeScreen() {
                                 viewModel.createQrCode(dataString)
                             }
                         }) {
-                        Text(
-                            text = stringResource(id = R.string.generate_qr_code)
-                        )
+                        Text(text = stringResource(id = R.string.generate_qr_code))
                     }
                     Spacer()
                     Icon(
@@ -96,11 +92,14 @@ fun QrCodeScreen() {
                     val latestQrCode = latestQrCodeState.value
                     if (latestQrCode != null) {
                         Spacer()
-                        QrCodeImage(bytes = latestQrCode.bytes)
-                        Spacer()
-                        Text(
-                            text = latestQrCode.toString()
+                        ImageFromByteArray(
+                            byteArray = latestQrCode.bytes,
+                            contentDescription = stringResource(
+                                id = R.string.content_description_qr_code
+                            )
                         )
+                        Spacer()
+                        Text(text = latestQrCode.toString())
                     }
                 }
             }

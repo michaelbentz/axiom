@@ -1,5 +1,7 @@
 package com.michaelbentz.axiom.ui.component
 
+import android.graphics.BitmapFactory
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -14,11 +16,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import com.michaelbentz.axiom.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,21 +52,25 @@ fun Spacer() {
     Spacer(modifier = Modifier.height(12.dp))
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun QrCodeImage(bytes: ByteArray) {
+fun ImageFromByteArray(
+    byteArray: ByteArray,
+    contentDescription: String? = null
+) {
+    val imageBitmap = BitmapFactory.decodeByteArray(
+        byteArray, 0, byteArray.size
+    ).asImageBitmap()
     Box(
         modifier = Modifier
             .background(
                 colorResource(id = R.color.white)
             )
     ) {
-        GlideImage(
-            model = bytes,
+        Image(
+            bitmap = imageBitmap,
             modifier = Modifier.padding(12.dp),
-            contentDescription = stringResource(
-                id = R.string.content_description_qr_code
-            )
+            contentDescription = contentDescription,
+            contentScale = ContentScale.Crop
         )
     }
 }
