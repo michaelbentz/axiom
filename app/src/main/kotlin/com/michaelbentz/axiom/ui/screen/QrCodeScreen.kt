@@ -87,11 +87,8 @@ fun QrCodeScreen() {
                         Icons.Filled.KeyboardArrowDown,
                         stringResource(id = R.string.content_description_arrow_down),
                     )
-                    Spacer()
-
                     val latestQrCode = latestQrCodeState.value
                     if (latestQrCode != null) {
-                        Spacer()
                         ImageFromByteArray(
                             byteArray = latestQrCode.bytes,
                             contentDescription = stringResource(
@@ -100,6 +97,7 @@ fun QrCodeScreen() {
                         )
                         Spacer()
                         Text(text = latestQrCode.toString())
+                        Spacer()
                     }
                 }
             }

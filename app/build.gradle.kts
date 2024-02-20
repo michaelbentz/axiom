@@ -4,7 +4,6 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
     id("kotlin-android")
-    id("kotlin-kapt")
 }
 
 android {
@@ -51,9 +50,6 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    kapt {
-        correctErrorTypes = true
-    }
 }
 
 dependencies {
@@ -71,8 +67,12 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.6.1")
 
     implementation("com.google.dagger:hilt-android:2.48.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+    ksp("com.google.dagger:dagger-compiler:2.48.1")
+    ksp("com.google.dagger:hilt-android-compiler:2.48.1")
 
+    ksp("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.room:room-paging:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
@@ -91,11 +91,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation("androidx.room:room-ktx:2.6.1")
     testImplementation("androidx.room:room-testing:2.6.1")
-    implementation("androidx.room:room-paging:2.6.1")
-    kaptTest("com.google.dagger:hilt-compiler:2.48.1")
-    kaptAndroidTest("com.google.dagger:hilt-compiler:2.48.1")
+    kspTest("com.google.dagger:hilt-compiler:2.48.1")
+    kspAndroidTest("com.google.dagger:hilt-compiler:2.48.1")
     testImplementation("com.google.dagger:hilt-android-testing:2.48.1")
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.48.1")
 }
