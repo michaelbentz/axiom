@@ -77,7 +77,7 @@ fun QrCodeScreen() {
                         onClick = {
                             if (dataString.isNotEmpty()) {
                                 focusManager.clearFocus()
-                                viewModel.createQrCode(dataString)
+                                viewModel.createQrCode(dataString.trim())
                             }
                         }) {
                         Text(text = stringResource(id = R.string.generate_qr_code))
